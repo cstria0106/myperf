@@ -1,0 +1,3 @@
+[submodule "vendor/exceptions4c"]
+	path = vendor/exceptions4c
+	url = https://github.com/guillermocalvo/exceptions4c
