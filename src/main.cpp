@@ -5,7 +5,6 @@
 #include "tcp/tcp.h"
 #include "zero_copy/zero_copy.h"
 
-#include <e4c.h>
 #include <stdio.h>
 
 void start(int argc, char* argv[]) {
@@ -22,19 +21,9 @@ void start(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-  e4c_context_begin(false);
-
   int exit_code = 0;
 
-  try {
-    start(argc, argv);
-  } catch (RuntimeException) {
-    e4c_exception* exception = e4c_get_exception();
-    fprintf(stderr, "%s", exception->message);
-    exit_code = EXIT_FAILURE;
-  }
-
-  e4c_context_end();
+  start(argc, argv);
 
   return exit_code;
 }

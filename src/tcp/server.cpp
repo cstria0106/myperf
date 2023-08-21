@@ -1,6 +1,5 @@
 #include "server.h"
 
-#include <e4c.h>
 #include <errno.h>
 #include <stdbool.h>
 #include <stdio.h>

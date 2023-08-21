@@ -6,25 +6,31 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/queue.h>
+#include <string>
 
-struct program;
-struct program_context;
+struct ProgramContext {};
 
-struct mode {
-  const char* name;
-  struct mode_functions* functions;
+class Program {};
 
-  TAILQ_ENTRY(mode) entries;
+class Mode {
+ private:
+  const std::string name;
+
+ protected:
+  explicit Mode(const std::string name);
+
+ public:
+  virtual ProgramContext* CreateContext() = 0;
+  virtual void StartServer(Program* program) = 0;
+  virtual void StartClient() = 0;
+
+  ~Mode() = default;
+
+  Mode(const Mode&) = delete;
+  Mode& operator=(const Mode&) = delete;
 };
 
-struct mode_functions {
-  struct program_context* (*create_context)(struct program* program);
-  void (*free_context)(struct program* program);
-  void (*start_server)(struct program* program);
-  void (*start_client)(struct program* program);
-};
-
-struct program_options {
+struct ProgramOptions {
   char* executable_name;
   bool list_modes;
   bool is_server;
@@ -34,12 +40,9 @@ struct program_options {
   const char* mode;
 };
 
-struct program_context {
-  struct mode* mode;
-};
-
-struct program {
-  struct program_options options;
+class Program {
+ private:
+  struct ProgramOptions options_;
   struct program_context* context;
 
   TAILQ_HEAD(modes, mode) modes;
